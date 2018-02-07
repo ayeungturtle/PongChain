@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PongChain1", "PongChain1\PongChain1.csproj", "{AFE85263-F7EB-479C-9311-7CAE32179472}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFE85263-F7EB-479C-9311-7CAE32179472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE85263-F7EB-479C-9311-7CAE32179472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE85263-F7EB-479C-9311-7CAE32179472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE85263-F7EB-479C-9311-7CAE32179472}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {50330020-BD38-4660-9E6A-A839216406D4}
+	EndGlobalSection
+EndGlobal
