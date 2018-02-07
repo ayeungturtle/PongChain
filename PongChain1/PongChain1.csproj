@@ -93,6 +93,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PongChain.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="index.html" />
+    <Content Include="index.js" />
     <Content Include="PongChain.edmx.diagram">
       <DependentUpon>PongChain.edmx</DependentUpon>
     </Content>

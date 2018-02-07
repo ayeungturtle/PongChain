@@ -31,7 +31,7 @@ namespace PongChain1
                 return NotFound();
             }
 
-            return Ok(player);
+            return Ok(player.FirstName + ' ' + player.LastName);
         }
 
         // PUT: api/Players/5
@@ -73,6 +73,10 @@ namespace PongChain1
         [ResponseType(typeof(Player))]
         public IHttpActionResult PostPlayer(Player player)
         {
+            if (player == null)
+            {
+                return InternalServerError();
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

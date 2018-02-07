@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript">
+        function handleClick() {
+            if (confirm('Please double check the game data before saving.')) {
+                var currentdate = new Date();
+                var datetime = currentdate.getDate() + "/"
+                    + (currentdate.getMonth() + 1) + "/"
+                    + currentdate.getFullYear() + " "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
+
+                var newGame = {
+                    DateTime: datetime,
+                    WinnerPlayersId: document.getElementById('winningPlayerId').value,
+                    LoserPlayersId: document.getElementById('losingPlayerId').value,
+                    WinnerScore: document.getElementById('winningScore').value,
+                    LoserScore: document.getElementById('losingScore').value,
+                    IsTournamentGame: document.getElementById('isTournamentGame').checked,
+                }
+
+                var response = jQuery.ajax({
+                    dataType: "json",
+                    data: newGame,
+                    url: "http://localhost:53460/api/Games/",
+                    async: false,
+                    type: "POST",
+                    context: document.body,
+                    success: function () {
+                        window.alert("The game has been saved.")
+                    },
+                    error: function () {
+                        window.alert("The game has NOT been saved.  Check the console for errors.")
+                    }
+                })
+
+                console.log(response.statusText)
+
+                var elements = document.getElementsByTagName("input");
+                for (var ii = 0; ii < elements.length; ii++) {
+                    if (elements[ii].type == "checkbox") {
+                        elements[ii].checked = false;
+                    } else {
+                        elements[ii].value = "";
+                    }
+                }
+                document.getElementById("winningPlayerName").innerHTML = '';
+                document.getElementById("losingPlayerName").innerHTML = '';
+            }
+        }
+
+        function PlayerBlur(player) {
+            var PlayerName = '';
+            var response = jQuery.ajax({
+                dataType: "json",
+                url: "http://localhost:53460/api/Players/" + document.getElementById(player).value,
+                async: false,
+                type: "GET",
+                context: document.body,
+                success: function () {
+                    console.log(response)
+                },
+                error: function () {
+                    winningPlayerName = '';
+                }
+            })
+            if (player == 'winningPlayerId') {
+                document.getElementById('winningPlayerName').innerHTML = response.responseJSON;
+            }
+            else if (player == 'losingPlayerId') {
+                document.getElementById('losingPlayerName').innerHTML = response.responseJSON;
+            }
+        }
+    </script>
+</head>
+<body>
+    <form>
+        Winner:  <input id="winningPlayerId" name="winningPlayerId" type="text" onblur="PlayerBlur('winningPlayerId')" placeholder="ID" />
+        <input id="winningScore" name="winningScore" type="number" placeholder="Score" />
+        <span id="winningPlayerName"></span><br /><br />
+        Loser:  <input id="losingPlayerId" name="losingPlayerId" type="text" onblur="PlayerBlur('losingPlayerId')" placeholder="ID" />
+        <input id="losingScore" name="losingScore" type="number" placeholder="Score" />
+        <span id="losingPlayerName"></span><br /><br />
+        Tournament Game? <input id="isTournamentGame" name="isTournamentGame" type="checkbox" value="Tournament Game?" /><br /><br />
+    </form>
+    <button onclick="handleClick()">Submit Game</button>
+</body>
+</html>

@@ -80,7 +80,12 @@ namespace PongChain1.Controllers
             }
 
             db.Games.Add(game);
-            db.SaveChanges();
+            try { db.SaveChanges(); }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+
 
             return CreatedAtRoute("DefaultApi", new { id = game.Id }, game);
         }
