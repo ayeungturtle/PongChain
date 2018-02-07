@@ -21,6 +21,19 @@ namespace PongChain1
             return db.Players;
         }
 
+        [HttpGet]
+        [Route("api/PlayerName/{id}")]
+        public IHttpActionResult GetPlayerName(int id)
+        {
+            Player player = db.Players.Find(id);
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(player.FirstName + ' ' + player.LastName);
+        }
+
         // GET: api/Players/5
         [ResponseType(typeof(Player))]
         public IHttpActionResult GetPlayer(int id)
@@ -31,7 +44,7 @@ namespace PongChain1
                 return NotFound();
             }
 
-            return Ok(player.FirstName + ' ' + player.LastName);
+            return Ok(player);
         }
 
         // PUT: api/Players/5

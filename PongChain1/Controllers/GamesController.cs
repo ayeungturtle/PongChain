@@ -35,6 +35,29 @@ namespace PongChain1.Controllers
             return Ok(game);
         }
 
+        [HttpGet]
+        [Route("api/PlayerRecord/{id}")]
+        public IHttpActionResult GetPlayerName(int id)
+        {
+            var winCount = db.Games
+                .Where(g => g.WinnerPlayersId == id)
+                .Count();
+
+            var loseCount = db.Games
+                .Where(g => g.LoserPlayersId == id)
+                .Count();
+
+            var name = db.Players
+                .Where(p => p.Id == id)
+                .FirstOrDefault();
+
+            var firstName = name.FirstName;
+
+            var lastName = name.LastName;
+
+            return Ok(firstName + ' ' + lastName + " ---------- Overall ---------- " + winCount + " wins, " + loseCount + " losses");
+        }
+
         // PUT: api/Games/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGame(int id, Game game)

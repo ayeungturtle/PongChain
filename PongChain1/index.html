@@ -58,7 +58,7 @@
             var PlayerName = '';
             var response = jQuery.ajax({
                 dataType: "json",
-                url: "http://localhost:53460/api/Players/" + document.getElementById(player).value,
+                url: "http://localhost:53460/api/PlayerName/" + document.getElementById(player).value,
                 async: false,
                 type: "GET",
                 context: document.body,
