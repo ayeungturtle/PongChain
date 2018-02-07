@@ -89,12 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <EntityDeploy Include="PongChainModel.edmx">
+    <EntityDeploy Include="PongChain.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PongChainModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>PongChain.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="PongChainModel.edmx.diagram">
-      <DependentUpon>PongChainModel.edmx</DependentUpon>
+    <Content Include="PongChain.edmx.diagram">
+      <DependentUpon>PongChain.edmx</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -109,45 +109,53 @@
       <DependentUpon>PongChain.mdf</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
-    <Content Include="PongChainModel.Context.tt">
+    <Content Include="PongChain.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PongChainModel.Context.cs</LastGenOutput>
-      <DependentUpon>PongChainModel.edmx</DependentUpon>
+      <DependentUpon>PongChain.edmx</DependentUpon>
+      <LastGenOutput>PongChain.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="PongChainModel.tt">
+    <Content Include="PongChain.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PongChainModel.edmx</DependentUpon>
-      <LastGenOutput>PongChainModel.cs</LastGenOutput>
+      <DependentUpon>PongChain.edmx</DependentUpon>
+      <LastGenOutput>PongChain.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BetLedger.cs">
+      <DependentUpon>PongChain.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompetitionLedger.cs">
+      <DependentUpon>PongChain.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\BetLedgersController.cs" />
+    <Compile Include="Controllers\CompetitionLedgersController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
-    <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Game.cs">
-      <DependentUpon>PongChainModel.tt</DependentUpon>
+      <DependentUpon>PongChain.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Player.cs">
-      <DependentUpon>PongChainModel.tt</DependentUpon>
+      <DependentUpon>PongChain.tt</DependentUpon>
     </Compile>
-    <Compile Include="PongChainModel.Context.cs">
+    <Compile Include="Controllers\PlayersController.cs" />
+    <Compile Include="PongChain.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PongChainModel.Context.tt</DependentUpon>
+      <DependentUpon>PongChain.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="PongChainModel.cs">
+    <Compile Include="PongChain.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PongChainModel.tt</DependentUpon>
+      <DependentUpon>PongChain.tt</DependentUpon>
     </Compile>
-    <Compile Include="PongChainModel.Designer.cs">
+    <Compile Include="PongChain.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PongChainModel.edmx</DependentUpon>
+      <DependentUpon>PongChain.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

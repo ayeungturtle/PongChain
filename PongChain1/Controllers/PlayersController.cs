@@ -8,13 +8,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using PongChain1;
 
-namespace PongChain1.Controllers
+namespace PongChain1
 {
     public class PlayersController : ApiController
     {
-        private PongChainEntities db = new PongChainEntities();
+        private PongChainEntities1 db = new PongChainEntities1();
 
         // GET: api/Players
         public IQueryable<Player> GetPlayers()

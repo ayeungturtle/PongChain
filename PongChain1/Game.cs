@@ -14,16 +14,25 @@ namespace PongChain1
     
     public partial class Game
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Game()
+        {
+            this.BetLedgers = new HashSet<BetLedger>();
+            this.CompetitionLedgers = new HashSet<CompetitionLedger>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime DateTime { get; set; }
         public int WinnerPlayersId { get; set; }
         public int LoserPlayersId { get; set; }
         public int WinnerScore { get; set; }
         public int LoserScore { get; set; }
-        public Nullable<decimal> WinMoney { get; set; }
-        public Nullable<decimal> LoseMoney { get; set; }
         public bool IsTournamentGame { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BetLedger> BetLedgers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompetitionLedger> CompetitionLedgers { get; set; }
         public virtual Player Player { get; set; }
         public virtual Player Player1 { get; set; }
     }

@@ -13,10 +13,10 @@ namespace PongChain1
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PongChainEntities : DbContext
+    public partial class PongChainEntities1 : DbContext
     {
-        public PongChainEntities()
-            : base("name=PongChainEntities")
+        public PongChainEntities1()
+            : base("name=PongChainEntities1")
         {
         }
     
@@ -27,5 +27,7 @@ namespace PongChain1
     
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<Player> Players { get; set; }
+        public virtual DbSet<BetLedger> BetLedgers { get; set; }
+        public virtual DbSet<CompetitionLedger> CompetitionLedgers { get; set; }
     }
 }

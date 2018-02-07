@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PongChainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\AYEUNG\SOURCE\REPOS\PONGCHAIN1\PONGCHAIN1\APP_DATA\PONGCHAIN.MDF.dbo.BetLedger' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BetLedger">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Active" />
+            <PropertyRef Name="PlayersId" />
+            <PropertyRef Name="Transaction" />
+            <PropertyRef Name="CurrentTotal" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="PlayersId" Type="int" Nullable="false" />
+          <Property Name="Transaction" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CurrentTotal" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="GamesId" Type="int" />
+          <Property Name="Description" Type="text" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\AYEUNG\SOURCE\REPOS\PONGCHAIN1\PONGCHAIN1\APP_DATA\PONGCHAIN.MDF.dbo.CompetitionLedger' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CompetitionLedger">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Active" />
+            <PropertyRef Name="PlayersId" />
+            <PropertyRef Name="Transaction" />
+            <PropertyRef Name="CurrentTotal" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="PlayersId" Type="int" Nullable="false" />
+          <Property Name="Transaction" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CurrentTotal" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="GamesId" Type="int" />
+          <Property Name="Description" Type="text" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="WinnerPlayersId" Type="int" Nullable="false" />
+          <Property Name="LoserPlayersId" Type="int" Nullable="false" />
+          <Property Name="WinnerScore" Type="int" Nullable="false" />
+          <Property Name="LoserScore" Type="int" Nullable="false" />
+          <Property Name="IsTournamentGame" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_BetLedger_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="0..1" />
+          <End Role="BetLedger" Type="Self.BetLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BetLedger">
+              <PropertyRef Name="GamesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BetLedger_Players">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="BetLedger" Type="Self.BetLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BetLedger">
+              <PropertyRef Name="PlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionLedger_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="0..1" />
+          <End Role="CompetitionLedger" Type="Self.CompetitionLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompetitionLedger">
+              <PropertyRef Name="GamesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionLedger_Players">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="CompetitionLedger" Type="Self.CompetitionLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompetitionLedger">
+              <PropertyRef Name="PlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GamesLoser_Players">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="LoserPlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GamesWinner_Players">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="WinnerPlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PongChainModelStoreContainer">
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BetLedger" EntityType="Self.BetLedger" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BetLedger].[Id] AS [Id], 
+    [BetLedger].[Active] AS [Active], 
+    [BetLedger].[PlayersId] AS [PlayersId], 
+    [BetLedger].[Transaction] AS [Transaction], 
+    [BetLedger].[CurrentTotal] AS [CurrentTotal], 
+    [BetLedger].[GamesId] AS [GamesId], 
+    [BetLedger].[Description] AS [Description]
+    FROM [dbo].[BetLedger] AS [BetLedger]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CompetitionLedger" EntityType="Self.CompetitionLedger" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CompetitionLedger].[Id] AS [Id], 
+    [CompetitionLedger].[Active] AS [Active], 
+    [CompetitionLedger].[PlayersId] AS [PlayersId], 
+    [CompetitionLedger].[Transaction] AS [Transaction], 
+    [CompetitionLedger].[CurrentTotal] AS [CurrentTotal], 
+    [CompetitionLedger].[GamesId] AS [GamesId], 
+    [CompetitionLedger].[Description] AS [Description]
+    FROM [dbo].[CompetitionLedger] AS [CompetitionLedger]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_BetLedger_Games" Association="Self.FK_BetLedger_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="BetLedger" EntitySet="BetLedger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BetLedger_Players" Association="Self.FK_BetLedger_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="BetLedger" EntitySet="BetLedger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionLedger_Games" Association="Self.FK_CompetitionLedger_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="CompetitionLedger" EntitySet="CompetitionLedger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionLedger_Players" Association="Self.FK_CompetitionLedger_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="CompetitionLedger" EntitySet="CompetitionLedger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GamesLoser_Players" Association="Self.FK_GamesLoser_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GamesWinner_Players" Association="Self.FK_GamesWinner_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PongChainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WinnerPlayersId" Type="Int32" Nullable="false" />
+          <Property Name="LoserPlayersId" Type="Int32" Nullable="false" />
+          <Property Name="WinnerScore" Type="Int32" Nullable="false" />
+          <Property Name="LoserScore" Type="Int32" Nullable="false" />
+          <Property Name="IsTournamentGame" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BetLedgers" Relationship="Self.FK_BetLedger_Games" FromRole="Games" ToRole="BetLedger" />
+          <NavigationProperty Name="CompetitionLedgers" Relationship="Self.FK_CompetitionLedger_Games" FromRole="Games" ToRole="CompetitionLedger" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_GamesLoser_Players" FromRole="Games" ToRole="Players" />
+          <NavigationProperty Name="Player1" Relationship="Self.FK_GamesWinner_Players" FromRole="Games" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_GamesLoser_Players" FromRole="Players" ToRole="Games" />
+          <NavigationProperty Name="Games1" Relationship="Self.FK_GamesWinner_Players" FromRole="Players" ToRole="Games" />
+          <NavigationProperty Name="BetLedgers" Relationship="Self.FK_BetLedger_Players" FromRole="Players" ToRole="BetLedger" />
+          <NavigationProperty Name="CompetitionLedgers" Relationship="Self.FK_CompetitionLedger_Players" FromRole="Players" ToRole="CompetitionLedger" />
+        </EntityType>
+        <EntityType Name="BetLedger">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Active" />
+            <PropertyRef Name="PlayersId" />
+            <PropertyRef Name="Transaction" />
+            <PropertyRef Name="CurrentTotal" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="PlayersId" Type="Int32" Nullable="false" />
+          <Property Name="Transaction" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CurrentTotal" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="GamesId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_BetLedger_Games" FromRole="BetLedger" ToRole="Games" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_BetLedger_Players" FromRole="BetLedger" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="CompetitionLedger">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Active" />
+            <PropertyRef Name="PlayersId" />
+            <PropertyRef Name="Transaction" />
+            <PropertyRef Name="CurrentTotal" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="PlayersId" Type="Int32" Nullable="false" />
+          <Property Name="Transaction" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CurrentTotal" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="GamesId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_CompetitionLedger_Games" FromRole="CompetitionLedger" ToRole="Games" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_CompetitionLedger_Players" FromRole="CompetitionLedger" ToRole="Players" />
+        </EntityType>
+        <Association Name="FK_BetLedger_Games">
+          <End Role="Games" Type="Self.Game" Multiplicity="0..1" />
+          <End Role="BetLedger" Type="Self.BetLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BetLedger">
+              <PropertyRef Name="GamesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionLedger_Games">
+          <End Role="Games" Type="Self.Game" Multiplicity="0..1" />
+          <End Role="CompetitionLedger" Type="Self.CompetitionLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompetitionLedger">
+              <PropertyRef Name="GamesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GamesLoser_Players">
+          <End Role="Players" Type="Self.Player" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="LoserPlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GamesWinner_Players">
+          <End Role="Players" Type="Self.Player" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="WinnerPlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BetLedger_Players">
+          <End Role="Players" Type="Self.Player" Multiplicity="1" />
+          <End Role="BetLedger" Type="Self.BetLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BetLedger">
+              <PropertyRef Name="PlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionLedger_Players">
+          <End Role="Players" Type="Self.Player" Multiplicity="1" />
+          <End Role="CompetitionLedger" Type="Self.CompetitionLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompetitionLedger">
+              <PropertyRef Name="PlayersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PongChainEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="Players" EntityType="Self.Player" />
+          <EntitySet Name="BetLedgers" EntityType="Self.BetLedger" />
+          <EntitySet Name="CompetitionLedgers" EntityType="Self.CompetitionLedger" />
+          <AssociationSet Name="FK_BetLedger_Games" Association="Self.FK_BetLedger_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="BetLedger" EntitySet="BetLedgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionLedger_Games" Association="Self.FK_CompetitionLedger_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="CompetitionLedger" EntitySet="CompetitionLedgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GamesLoser_Players" Association="Self.FK_GamesLoser_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GamesWinner_Players" Association="Self.FK_GamesWinner_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BetLedger_Players" Association="Self.FK_BetLedger_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="BetLedger" EntitySet="BetLedgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionLedger_Players" Association="Self.FK_CompetitionLedger_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="CompetitionLedger" EntitySet="CompetitionLedgers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PongChainModelStoreContainer" CdmEntityContainer="PongChainEntities1">
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="PongChainModel.Game">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="WinnerPlayersId" ColumnName="WinnerPlayersId" />
+                <ScalarProperty Name="LoserPlayersId" ColumnName="LoserPlayersId" />
+                <ScalarProperty Name="WinnerScore" ColumnName="WinnerScore" />
+                <ScalarProperty Name="LoserScore" ColumnName="LoserScore" />
+                <ScalarProperty Name="IsTournamentGame" ColumnName="IsTournamentGame" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="PongChainModel.Player">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BetLedgers">
+            <EntityTypeMapping TypeName="PongChainModel.BetLedger">
+              <MappingFragment StoreEntitySet="BetLedger">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PlayersId" ColumnName="PlayersId" />
+                <ScalarProperty Name="Transaction" ColumnName="Transaction" />
+                <ScalarProperty Name="CurrentTotal" ColumnName="CurrentTotal" />
+                <ScalarProperty Name="GamesId" ColumnName="GamesId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompetitionLedgers">
+            <EntityTypeMapping TypeName="PongChainModel.CompetitionLedger">
+              <MappingFragment StoreEntitySet="CompetitionLedger">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PlayersId" ColumnName="PlayersId" />
+                <ScalarProperty Name="Transaction" ColumnName="Transaction" />
+                <ScalarProperty Name="CurrentTotal" ColumnName="CurrentTotal" />
+                <ScalarProperty Name="GamesId" ColumnName="GamesId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

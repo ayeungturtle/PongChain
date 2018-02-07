@@ -19,18 +19,22 @@ namespace PongChain1
         {
             this.Games = new HashSet<Game>();
             this.Games1 = new HashSet<Game>();
+            this.BetLedgers = new HashSet<BetLedger>();
+            this.CompetitionLedgers = new HashSet<CompetitionLedger>();
         }
     
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NickName { get; set; }
-        public decimal CompetitionMoney { get; set; }
-        public decimal GamblingMoney { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Game> Games { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Game> Games1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BetLedger> BetLedgers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompetitionLedger> CompetitionLedgers { get; set; }
     }
 }

@@ -12,44 +12,44 @@ using PongChain1;
 
 namespace PongChain1.Controllers
 {
-    public class GamesController : ApiController
+    public class BetLedgersController : ApiController
     {
         private PongChainEntities1 db = new PongChainEntities1();
 
-        // GET: api/Games
-        public IQueryable<Game> GetGames()
+        // GET: api/BetLedgers
+        public IQueryable<BetLedger> GetBetLedgers()
         {
-            return db.Games;
+            return db.BetLedgers;
         }
 
-        // GET: api/Games/5
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult GetGame(int id)
+        // GET: api/BetLedgers/5
+        [ResponseType(typeof(BetLedger))]
+        public IHttpActionResult GetBetLedger(int id)
         {
-            Game game = db.Games.Find(id);
-            if (game == null)
+            BetLedger betLedger = db.BetLedgers.Find(id);
+            if (betLedger == null)
             {
                 return NotFound();
             }
 
-            return Ok(game);
+            return Ok(betLedger);
         }
 
-        // PUT: api/Games/5
+        // PUT: api/BetLedgers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGame(int id, Game game)
+        public IHttpActionResult PutBetLedger(int id, BetLedger betLedger)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != game.Id)
+            if (id != betLedger.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(game).State = EntityState.Modified;
+            db.Entry(betLedger).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace PongChain1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GameExists(id))
+                if (!BetLedgerExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace PongChain1.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Games
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult PostGame(Game game)
+        // POST: api/BetLedgers
+        [ResponseType(typeof(BetLedger))]
+        public IHttpActionResult PostBetLedger(BetLedger betLedger)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Games.Add(game);
+            db.BetLedgers.Add(betLedger);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = game.Id }, game);
+            return CreatedAtRoute("DefaultApi", new { id = betLedger.Id }, betLedger);
         }
 
-        // DELETE: api/Games/5
-        [ResponseType(typeof(Game))]
-        public IHttpActionResult DeleteGame(int id)
+        // DELETE: api/BetLedgers/5
+        [ResponseType(typeof(BetLedger))]
+        public IHttpActionResult DeleteBetLedger(int id)
         {
-            Game game = db.Games.Find(id);
-            if (game == null)
+            BetLedger betLedger = db.BetLedgers.Find(id);
+            if (betLedger == null)
             {
                 return NotFound();
             }
 
-            db.Games.Remove(game);
+            db.BetLedgers.Remove(betLedger);
             db.SaveChanges();
 
-            return Ok(game);
+            return Ok(betLedger);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace PongChain1.Controllers
             base.Dispose(disposing);
         }
 
-        private bool GameExists(int id)
+        private bool BetLedgerExists(int id)
         {
-            return db.Games.Count(e => e.Id == id) > 0;
+            return db.BetLedgers.Count(e => e.Id == id) > 0;
         }
     }
 }
