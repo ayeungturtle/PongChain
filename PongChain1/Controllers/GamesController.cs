@@ -51,11 +51,44 @@ namespace PongChain1.Controllers
                 .Where(p => p.Id == id)
                 .FirstOrDefault();
 
+            if(name == null)
+            {
+                return NotFound();
+            }
+            
             var firstName = name.FirstName;
 
             var lastName = name.LastName;
 
-            return Ok(firstName + ' ' + lastName + " ---------- Overall ---------- " + winCount + " wins, " + loseCount + " losses");
+            return Ok(firstName + ' ' + lastName + " " + winCount + "W, " + loseCount + "L");
+        }
+
+        [HttpGet]
+        [Route("api/HeadToHeadRecord/{PlayerId1}/{PlayerId2}")]
+        public IHttpActionResult GetHeadToHeadRecord(int PlayerId1, int PlayerId2)
+        {
+            var winCount1 = db.Games
+                .Where(g => g.WinnerPlayersId == PlayerId1 && g.LoserPlayersId == PlayerId2)
+                .Count();
+
+            var winCount2 = db.Games
+                .Where(g => g.WinnerPlayersId == PlayerId2 && g.LoserPlayersId == PlayerId1)
+                .Count();
+
+            var name1 = db.Players
+                .Where(p => p.Id == PlayerId1)
+                .FirstOrDefault();
+
+            var firstName1 = name1.FirstName;
+
+            var name2 = db.Players
+                .Where(p => p.Id == PlayerId2)
+                .FirstOrDefault();
+
+            var firstName2 = name2.FirstName;
+
+
+            return Ok(firstName1 + ' ' + winCount1 + " - " + winCount2 + " " + firstName2);
         }
 
         // PUT: api/Games/5

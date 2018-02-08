@@ -7,9 +7,38 @@
     <script language="javascript" type="text/javascript">
         function handleClick() {
             if (confirm('Please double check the game data before saving.')) {
+                var playerId1 = document.getElementById('PlayerId1').value;
+                var playerScore1 = document.getElementById('Score1').value;
+                var playerId2 = document.getElementById('PlayerId2').value;
+                var playerScore2 = document.getElementById('Score2').value;
+
+                if (playerScore1 > playerScore2) {
+                    var winnerPlayersId = playerId1;
+                    var winnerScore = playerScore1;
+                    var loserPlayersId = playerId2;
+                    var loserScore = playerScore2;
+                }
+                else if (playerScore2 > playerScore1) {
+                    var winnerPlayersId = playerId2;
+                    var winnerScore = playerScore2;
+                    var loserPlayersId = playerId1;
+                    var loserScore = playerScore1;
+                } else {
+                    alert("There are no ties in ping pong, fool.");
+                    return
+                }
+
+                var winnerTagId = "PlayerId" + winnerPlayersId;
+                var loserTagId = "PlayerId" + loserPlayersId;
+
+                if (playerId1 == playerId2) {
+                    alert("One cannot play ping pong against themself, fool.");
+                    return
+                }
+
                 var currentdate = new Date();
-                var datetime = currentdate.getDate() + "/"
-                    + (currentdate.getMonth() + 1) + "/"
+                var datetime =  (currentdate.getMonth() + 1) + "/"
+                    + currentdate.getDate() + "/"
                     + currentdate.getFullYear() + " "
                     + currentdate.getHours() + ":"
                     + currentdate.getMinutes() + ":"
@@ -17,10 +46,10 @@
 
                 var newGame = {
                     DateTime: datetime,
-                    WinnerPlayersId: document.getElementById('winningPlayerId').value,
-                    LoserPlayersId: document.getElementById('losingPlayerId').value,
-                    WinnerScore: document.getElementById('winningScore').value,
-                    LoserScore: document.getElementById('losingScore').value,
+                    WinnerPlayersId: winnerPlayersId,
+                    LoserPlayersId: loserPlayersId,
+                    WinnerScore: winnerScore,
+                    LoserScore: loserScore,
                     IsTournamentGame: document.getElementById('isTournamentGame').checked,
                 }
 
@@ -33,24 +62,25 @@
                     context: document.body,
                     success: function () {
                         window.alert("The game has been saved.")
+
+                        document.getElementById("PlayerId1").value = '';
+                        document.getElementById("PlayerId2").value = '';
+                        document.getElementById("Score1").value = '';
+                        document.getElementById("Score2").value = '';
+                        document.getElementById("PlayerName1").innerHTML = '';
+                        document.getElementById("PlayerName2").innerHTML = '';
+                        document.getElementById("headToHeadTitle").innerHTML = '';
+                        document.getElementById("headToHead").innerHTML = '';
+                        document.getElementById("isTournamentGame").checked = false;
+
+                        //PlayerBlur(winnerTagId);
                     },
                     error: function () {
                         window.alert("The game has NOT been saved.  Check the console for errors.")
                     }
                 })
 
-                console.log(response.statusText)
-
-                var elements = document.getElementsByTagName("input");
-                for (var ii = 0; ii < elements.length; ii++) {
-                    if (elements[ii].type == "checkbox") {
-                        elements[ii].checked = false;
-                    } else {
-                        elements[ii].value = "";
-                    }
-                }
-                document.getElementById("winningPlayerName").innerHTML = '';
-                document.getElementById("losingPlayerName").innerHTML = '';
+                
             }
         }
 
@@ -58,7 +88,7 @@
             var PlayerName = '';
             var response = jQuery.ajax({
                 dataType: "json",
-                url: "http://localhost:53460/api/PlayerName/" + document.getElementById(player).value,
+                url: "http://localhost:53460/api/PlayerRecord/" + document.getElementById(player).value,
                 async: false,
                 type: "GET",
                 context: document.body,
@@ -69,25 +99,48 @@
                     winningPlayerName = '';
                 }
             })
-            if (player == 'winningPlayerId') {
-                document.getElementById('winningPlayerName').innerHTML = response.responseJSON;
+            if (player == 'PlayerId1') {
+                document.getElementById('PlayerName1').innerHTML = response.responseJSON;
             }
-            else if (player == 'losingPlayerId') {
-                document.getElementById('losingPlayerName').innerHTML = response.responseJSON;
+            else if (player == 'PlayerId2') {
+                document.getElementById('PlayerName2').innerHTML = response.responseJSON;
+            }
+            if ((document.getElementById('PlayerId1').value != '') && (document.getElementById('PlayerId2').value != '')){
+                var h2hResponse = jQuery.ajax({
+                    dataType: "json",
+                    url: "http://localhost:53460/api/HeadToHeadRecord/" + document.getElementById("PlayerId1").value + "/" + document.getElementById("PlayerId2").value,
+                    async: false,
+                    type: "GET",
+                    context: document.body,
+                    success: function () {
+                        console.log(response)
+                    },
+                    error: function () {
+                        winningPlayerName = '';
+                    }
+                })
+                document.getElementById("headToHeadTitle").innerHTML = 'Head-to-Head';
+                document.getElementById("headToHead").innerHTML = h2hResponse.responseJSON;
+            } else {
+                document.getElementById("headToHeadTitle").innerHTML = '';
+                document.getElementById("headToHead").innerHTML = '';
             }
         }
     </script>
 </head>
 <body>
+    <h2>New Game</h2>
     <form>
-        Winner:  <input id="winningPlayerId" name="winningPlayerId" type="text" onblur="PlayerBlur('winningPlayerId')" placeholder="ID" />
-        <input id="winningScore" name="winningScore" type="number" placeholder="Score" />
-        <span id="winningPlayerName"></span><br /><br />
-        Loser:  <input id="losingPlayerId" name="losingPlayerId" type="text" onblur="PlayerBlur('losingPlayerId')" placeholder="ID" />
-        <input id="losingScore" name="losingScore" type="number" placeholder="Score" />
-        <span id="losingPlayerName"></span><br /><br />
+        Player 1:  <input id="PlayerId1" name="PlayerId1" type="text" onBlur="PlayerBlur('PlayerId1')" placeholder="ID" />
+        <input id="Score1" name="Score1" type="number" placeholder="Score" />
+        <span id="PlayerName1"></span><br /><br />
+        Player 2:  <input id="PlayerId2" name="PlayerId2" type="text" onBlur="PlayerBlur('PlayerId2')" placeholder="ID" />
+        <input id="Score2" name="Score2" type="number" placeholder="Score" />
+        <span id="PlayerName2"></span><br /><br />
         Tournament Game? <input id="isTournamentGame" name="isTournamentGame" type="checkbox" value="Tournament Game?" /><br /><br />
     </form>
-    <button onclick="handleClick()">Submit Game</button>
+    <button onclick="handleClick()">Submit Game</button><br /><br /><br /><br />
+    <h2 id="headToHeadTitle"></h2>
+    <div id="headToHead"></div>
 </body>
 </html>
