@@ -4,5 +4,9 @@
 shows overall and head-to-head record:
 ![](2.gif)
 
+
+______________________________________________________________________________________________________________
+
+
 Early html/JS page for adding new game results:
 ![](earlyGameResults.gif)
