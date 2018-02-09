@@ -7,10 +7,10 @@
     <script language="javascript" type="text/javascript">
         function handleClick() {
             if (confirm('Please double check the game data before saving.')) {
-                var playerId1 = document.getElementById('PlayerId1').value;
-                var playerScore1 = document.getElementById('Score1').value;
-                var playerId2 = document.getElementById('PlayerId2').value;
-                var playerScore2 = document.getElementById('Score2').value;
+                var playerId1 = document.getElementById('PlayerId1').valueAsNumber;
+                var playerScore1 = document.getElementById('Score1').valueAsNumber;
+                var playerId2 = document.getElementById('PlayerId2').valueAsNumber;
+                var playerScore2 = document.getElementById('Score2').valueAsNumber;
 
                 if (playerScore1 > playerScore2) {
                     var winnerPlayersId = playerId1;
@@ -28,21 +28,22 @@
                     return
                 }
 
-                var winnerTagId = "PlayerId" + winnerPlayersId;
-                var loserTagId = "PlayerId" + loserPlayersId;
-
                 if (playerId1 == playerId2) {
                     alert("One cannot play ping pong against themself, fool.");
                     return
                 }
 
+                var winnerTagId = "PlayerId" + winnerPlayersId;
+                var loserTagId = "PlayerId" + loserPlayersId;
+
+
                 var currentdate = new Date();
                 var datetime =  (currentdate.getMonth() + 1) + "/"
-                    + currentdate.getDate() + "/"
-                    + currentdate.getFullYear() + " "
-                    + currentdate.getHours() + ":"
-                    + currentdate.getMinutes() + ":"
-                    + currentdate.getSeconds();
+                + currentdate.getDate() + "/"
+                + currentdate.getFullYear() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
 
                 var newGame = {
                     DateTime: datetime,
@@ -80,7 +81,7 @@
                     }
                 })
 
-                
+
             }
         }
 
@@ -105,7 +106,7 @@
             else if (player == 'PlayerId2') {
                 document.getElementById('PlayerName2').innerHTML = response.responseJSON;
             }
-            if ((document.getElementById('PlayerId1').value != '') && (document.getElementById('PlayerId2').value != '')){
+            if ((document.getElementById('PlayerId1').value != '') && (document.getElementById('PlayerId2').value != '')) {
                 var h2hResponse = jQuery.ajax({
                     dataType: "json",
                     url: "http://localhost:53460/api/HeadToHeadRecord/" + document.getElementById("PlayerId1").value + "/" + document.getElementById("PlayerId2").value,
@@ -119,11 +120,30 @@
                         winningPlayerName = '';
                     }
                 })
+
+                var oddsResponse = jQuery.ajax({
+                    dataType: "json",
+                    url: "http://localhost:53460/api/GenerateOdds/" + document.getElementById("PlayerId1").value + "/" + document.getElementById("PlayerId2").value,
+                    async: false,
+                    type: "GET",
+                    context: document.body,
+                    success: function () {
+                        console.log(response)
+                    },
+                    error: function () {
+                        winningPlayerName = '';
+                    }
+                })
                 document.getElementById("headToHeadTitle").innerHTML = 'Head-to-Head';
                 document.getElementById("headToHead").innerHTML = h2hResponse.responseJSON;
+                document.getElementById("oddsTitle").innerHTML = 'Betting Odds';
+                document.getElementById("odds").innerHTML = oddsResponse.responseJSON;
             } else {
                 document.getElementById("headToHeadTitle").innerHTML = '';
                 document.getElementById("headToHead").innerHTML = '';
+                document.getElementById("oddsTitle").innerHTML = '';
+                document.getElementById("odds").innerHTML = '';
+
             }
         }
     </script>
@@ -131,16 +151,19 @@
 <body>
     <h2>New Game</h2>
     <form>
-        Player 1:  <input id="PlayerId1" name="PlayerId1" type="text" onBlur="PlayerBlur('PlayerId1')" placeholder="ID" />
+        Player 1:  <input id="PlayerId1" name="PlayerId1" type="number" onBlur="PlayerBlur('PlayerId1')" placeholder="ID" />
         <input id="Score1" name="Score1" type="number" placeholder="Score" />
         <span id="PlayerName1"></span><br /><br />
-        Player 2:  <input id="PlayerId2" name="PlayerId2" type="text" onBlur="PlayerBlur('PlayerId2')" placeholder="ID" />
+        Player 2:  <input id="PlayerId2" name="PlayerId2" type="number" onBlur="PlayerBlur('PlayerId2')" placeholder="ID" />
         <input id="Score2" name="Score2" type="number" placeholder="Score" />
         <span id="PlayerName2"></span><br /><br />
         Tournament Game? <input id="isTournamentGame" name="isTournamentGame" type="checkbox" value="Tournament Game?" /><br /><br />
     </form>
-    <button onclick="handleClick()">Submit Game</button><br /><br /><br /><br />
+    <button onclick="handleClick()">Submit Game</button><br /><br />
     <h2 id="headToHeadTitle"></h2>
-    <div id="headToHead"></div>
+    <div id="headToHead"></div> <br />
+
+    <h2 id="oddsTitle"></h2>
+    <div id="odds"></div>
 </body>
 </html>
