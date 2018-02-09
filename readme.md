@@ -16,4 +16,4 @@ ________________________________________________________________________________
 
 
 Early html/JS page for adding new game results:
-![](earlyGameResults.gif)
+![](1.gif)
